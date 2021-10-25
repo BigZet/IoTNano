@@ -1,0 +1,17 @@
+Main data:
+	time:			timestamp
+	redSignal:		int
+	greenSignal:	int
+	IRSignal: 		int
+	heartRate:		int
+	validHeartRate:	int
+	spo2:			int
+	validSPO2:		int
+
+Config:
+	ledBrightness:	byte
+	sampleAverage: 	byte
+	ledMode:		byte
+	sampleRate:		byte
+	pulseWidth:		int
+	adcRange:		int
