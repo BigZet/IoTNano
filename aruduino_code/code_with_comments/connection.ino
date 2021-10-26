@@ -1,59 +1,19 @@
-//ИМПОРТ БИБЛ
-#include <ArduinoECCX08.h>
-#include <utility/ECCX08JWS.h>
-#include <ArduinoMqttClient.h>
-#include <Arduino_JSON.h>
-#include <WiFiNINA.h> // change to #include <WiFi101.h> for MKR1000
-
-#include "arduino_secrets.h"
-
-
-//ОПРЕДЕЛЕНИЕ ОБЪЕКТОВ И КОНСТАНТ
-//Данные для входа
-const char ssid[]        = SECRET_SSID; //Название сети
-const char pass[]        = SECRET_PASS; //Пароль
-
-const char projectId[]   = SECRET_PROJECT_ID; //ID проекта, есть в "информации о проекте"
-const char cloudRegion[] = SECRET_CLOUD_REGION; //Регион IoT core девайса, можно увидеть в вкладке IoT Core/Devices
-const char registryId[]  = SECRET_REGISTRY_ID;//Registry ID можно увидеть в вкладке IoT Core/Devices
-const String deviceId    = SECRET_DEVICE_ID; //можно увидеть в вкладке IoT Core/Devices
-
-const char broker[]      = "mqtt.googleapis.com"; //адрес mqtt моста (брокера)
-
-WiFiSSLClient wifiSslClient; //Объект зашифрованной WiFi сессии
-MqttClient    mqttClient(wifiSslClient); //Объект MQTT клиента
-//исходник https://github.com/arduino-libraries/ArduinoMqttClient/blob/master/src/MqttClient.cpp
-
-unsigned long lastMillis = 0; //Время с последнего действия
-
-
-//НАЧАЛЬНЫЕ УСТАНОВКИ выполняются перед запуском mainloop'a "void loop()"
-void setup() {
-  Serial.begin(9600);//Запуск и открытие серийного порта для подключения по проводу и вывода в консоль
-  //Считать и отправить данные по этому порту можно с любого терминала, например Putty, выбрав serial в настройках 
-  while (!Serial); //Ждем пока не откроется порт
-
-//Если не запустился/отсуствует WiFi module
+void initConnectModule(){
+    //Если не запустился/отсуствует WiFi module
   if (!ECCX08.begin()) {
     Serial.println("No ECCX08 present!");
     while (1);//Входим в бесконечный цикл, альтернатива завершению кода
   }
 
-  // Подсчет client id для MQTT
-  String clientId = calculateClientId();
-
   //Установка client id MQTT клиенту
   mqttClient.setId(clientId);
-
 
   //Установка хендлера (обработчика, функции которая выполняется при получении сообщения) в MQTT Client
   mqttClient.onMessage(onMessageReceived);
 }
 
-//MAINLOOP ЦИКЛ в котором и происходит основная работа устройства
-void loop() {
-  
-  //Если еще не подключены к сети WiFi
+void reConnect(){
+    //Если еще не подключены к сети WiFi
   if (WiFi.status() != WL_CONNECTED) {
     //Подключаемся
     connectWiFi();
@@ -68,20 +28,26 @@ void loop() {
   //Вообще не совсем понятная штука. Посмотрел исходники там она просто чекает 
   //соединение и проверяет если ли какие новые сообщения
   mqttClient.poll();
+}
 
-  // Каждые 10 сек отправляет сообщение
-  if (millis() - lastMillis > 10000) {
+void sendAlive(){
+   if (millis() - lastMillis > 10000) {
     //Запоминаем новую временную точку отсчета
     //millis() – Возвращает количество миллисекунд, прошедших с запуска
     lastMillis = millis();
 
     //Отправка сообщения
-    publishMessage();
+    publishMessageAlive();
   }
 }
 
-
-//ПОЛЬЗОВАТЕЛЬСКИЕ ФУНКЦИИ
+void publishMessageAlive() {
+  Serial.println("Publishing message");
+  mqttClient.beginMessage("/devices/" + deviceId + "/state");
+  mqttClient.print("Im still alive: ");
+  mqttClient.print(millis());
+  mqttClient.endMessage();
+}
 
 unsigned long getTime() {
   // С  NTP сервера через WiFi модуль узнаем время с  первого января 1970 года 

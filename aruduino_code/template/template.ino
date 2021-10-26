@@ -1,29 +1,11 @@
-/*
-  GCP (Google Cloud Platform) IoT Core WiFi
-
-  This sketch securely connects to GCP IoT Core using MQTT over WiFi.
-  It uses a private key stored in the ATECC508A and a JSON Web Token (JWT) with
-  a JSON Web Signature (JWS).
-
-  It publishes a message every 5 seconds to "/devices/{deviceId}/state" topic
-  and subscribes to messages on the "/devices/{deviceId}/config" and
-  "/devices/{deviceId}/commands/#" topics.
-
-  The circuit:
-  - Arduino MKR WiFi 1010 or MKR1000
-
-  This example code is in the public domain.
-*/
-
 #include <ArduinoECCX08.h>
 #include <utility/ECCX08JWS.h>
 #include <ArduinoMqttClient.h>
 #include <Arduino_JSON.h>
-#include <WiFiNINA.h> // change to #include <WiFi101.h> for MKR1000
+#include <WiFiNINA.h> 
 
 #include "arduino_secrets.h"
 
-/////// Enter your sensitive data in arduino_secrets.h
 const char ssid[]        = SECRET_SSID;
 const char pass[]        = SECRET_PASS;
 
