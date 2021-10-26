@@ -1,4 +1,3 @@
-import paho.mqtt.client as mqtt
 import jsongen
 import jsonparser
 
