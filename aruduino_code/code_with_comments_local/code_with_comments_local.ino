@@ -19,7 +19,7 @@ const char projectId[]   = SECRET_PROJECT_ID; //ID проекта, есть в "
 const char cloudRegion[] = SECRET_CLOUD_REGION; //Регион IoT core девайса, можно увидеть в вкладке IoT Core/Devices
 const char registryId[]  = SECRET_REGISTRY_ID;//Registry ID можно увидеть в вкладке IoT Core/Devices
 const String deviceId    = SECRET_DEVICE_ID; //можно увидеть в вкладке IoT Core/Devices
-const char broker[]      = "mqtt.googleapis.com"; //адрес mqtt моста (брокера)
+const char broker[]      = "broker.hivemq.com"; //адрес mqtt моста (брокера)
 
 
 const uint8_t max_brightness = MAX_BRIGHTNESS;
@@ -34,7 +34,7 @@ uint16_t irBuffer[100]; //infrared LED sensor data
 uint16_t redBuffer[100];  //red LED sensor data
 
 
-WiFiSSLClient wifiSslClient; //Объект зашифрованной WiFi сессии
+WiFiClient wifiSslClient; //Объект зашифрованной WiFi сессии
 MqttClient    mqttClient(wifiSslClient); //Объект MQTT клиента
 MAX30105 particleSensor;// Объект сенсора
 

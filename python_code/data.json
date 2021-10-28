@@ -1,1 +1,1 @@
-{"time": "10:16:28 26.10.2021", "redSignal": 4645, "greenSignal": 2795, "IRSignal": 6414, "heartRate": 158, "validHeartRate": 134, "spo2": 894, "validSPO2": 195, "ledBrightness": 60, "sampleAverage": 4, "ledMode": 2, "sampleRate": 100, "pulseWidth": 411, "adcRange": 4096}
+{"time": "00:03:51 27.10.2021", "redled": 9479, "irled": 14608, "heartRate": 538, "spo2": 814}

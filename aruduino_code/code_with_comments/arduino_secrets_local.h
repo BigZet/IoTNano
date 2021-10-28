@@ -3,7 +3,7 @@
 #define SECRET_PASS         "ADXXPeXD"
 
 // Fill in your Google Cloud Platform - IoT Core info
-#define SECRET_PROJECT_ID   "arduino-nano-iot-33-327219"
-#define SECRET_CLOUD_REGION "europe-west1"
-#define SECRET_REGISTRY_ID  "heartrate_nano_iot"
+#define SECRET_PROJECT_ID   "local_project_id"
+#define SECRET_CLOUD_REGION "local_region"
+#define SECRET_REGISTRY_ID  "local_registry_id"
 #define SECRET_DEVICE_ID    "Nano33IoT"

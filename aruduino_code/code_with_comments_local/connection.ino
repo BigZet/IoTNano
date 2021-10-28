@@ -25,7 +25,15 @@ void sendAlive(){
     lastMillis = millis();
 
     //Отправка сообщения
-    publishMessageAlive();
+    publishMsg("alive", "alive");
+    delay(100);
+    publishMsg(String(random(0, 100)), "redled");
+    delay(100);
+    publishMsg(String(random(0, 100)), "irled");
+    delay(100);
+    publishMsg(String(random(100, 190)), "hr");
+    delay(100);
+    publishMsg(String(random(100, 300)), "sp");
   }
 }
 
@@ -36,6 +44,15 @@ void publishMessageAlive() {
   mqttClient.print(millis());
   mqttClient.print(";");
   mqttClient.print(getTime());
+  mqttClient.endMessage();
+}
+
+void publishMsg(String text, String topic){
+  Serial.println("Publishing message in public/" + topic + " about " + text);
+  mqttClient.beginMessage("public/" + topic);
+  mqttClient.print(millis());
+  mqttClient.print(":");
+  mqttClient.print(text);
   mqttClient.endMessage();
 }
 
@@ -89,10 +106,10 @@ zDSmwrdpZVMPLqPUFtgu1RygPc5dyCAbE2wuKLkrW6PYww==
      */
      
     //Полученный JWT токен устанавливаем в качестве пароля mqtt пользователя, имя пользователя оставляем пустым
-    mqttClient.setUsernamePassword("", jwt);
+    //mqttClient.setUsernamePassword("", jwt);
 
     //Пытаемся подключиться к брокеру по 8883 порту (стандартный для защищенного mqtt)
-    if (!mqttClient.connect(broker, 8883)) {
+    if (!mqttClient.connect(broker, 1883)) {
       // Неудача
       Serial.print(".");
       //Спим 5 сек
